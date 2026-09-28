@@ -1,0 +1,1455 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Petualangan PJOK Kelas 4 - Kurikulum Merdeka</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter & Fredoka -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        pjok: {
+                            dark: '#065f46',
+                            primary: '#10b981',
+                            light: '#34d399',
+                            accent: '#f59e0b',
+                            gold: '#d97706',
+                            cream: '#ecfdf5',
+                            softbg: '#f0fdf4'
+                        }
+                    },
+                    fontFamily: {
+                        fredoka: ['Fredoka', 'sans-serif'],
+                        inter: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f0fdf4 0%, #e0f2fe 50%, #fef3c7 100%);
+            min-height: 100vh;
+        }
+
+        .font-game {
+            font-family: 'Fredoka', cursive, sans-serif;
+        }
+
+        /* Steady glass card - Absolutely zero shaking, wobbling, or bouncing animations */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(12px);
+            border: 2px solid #e2e8f0;
+            box-shadow: 0 10px 25px -5px rgba(6, 95, 70, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.03);
+            transform: none !important;
+            animation: none !important;
+            transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .hover-card:hover {
+            border-color: #10b981;
+            box-shadow: 0 12px 28px -5px rgba(16, 185, 129, 0.18);
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #10b981;
+            border-radius: 10px;
+        }
+
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #certificate-modal, #certificate-modal * {
+                visibility: visible;
+            }
+            #certificate-modal {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                background: white !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen text-slate-800 antialiased selection:bg-emerald-600 selection:text-white">
+
+    <header class="bg-white/95 backdrop-blur sticky top-0 z-40 border-b border-slate-200 shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 py-2.5 flex items-center justify-between">
+            <!-- Brand & Title -->
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="openHomeModal()">
+                <div class="w-10 h-10 rounded-2xl bg-emerald-600 flex items-center justify-center text-white font-bold text-xl shadow-sm">
+                    ⚽
+                </div>
+                <div>
+                    <h1 class="font-game font-bold text-base md:text-lg text-emerald-950 leading-tight">
+                        PETUALANGAN PJOK KELAS 4
+                    </h1>
+                    <p class="text-xs text-slate-500 font-medium hidden sm:block">Pendidikan Jasmani, Olahraga, dan Kesehatan Kurikulum Merdeka Kelas 4 SD/MI • Semester 1</p>
+                </div>
+            </div>
+
+            <!-- Header Controls -->
+            <div class="flex items-center gap-2 sm:gap-4">
+                <button onclick="openHomeModal()" class="font-game bg-emerald-600 hover:bg-emerald-700 text-white px-3.5 py-1.5 rounded-xl text-xs md:text-sm font-bold shadow-sm transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-house"></i>
+                    <span>HOME</span>
+                </button>
+
+                <!-- Audio Controls -->
+                <div class="flex items-center bg-slate-100 border border-slate-200 rounded-xl px-2.5 py-1 gap-2">
+                    <button id="btn-audio-toggle" onclick="toggleMute()" class="text-emerald-600 hover:text-emerald-800 text-base font-bold transition" title="Mute / Unmute SFX">
+                        <i id="icon-audio" class="fa-solid fa-volume-high"></i>
+                    </button>
+                    <input type="range" id="volume-slider" min="0" max="1" step="0.1" value="0.8" oninput="changeVolume(this.value)" class="w-16 md:w-20 accent-emerald-600 cursor-pointer" title="Pengatur Volume">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-6xl w-full mx-auto px-4 py-6 flex flex-col justify-center">
+
+        <!-- SCREEN 1: INSTANT LOGIN SCREEN (NO LOADING/BUFFERING DELAY) -->
+        <section id="screen-login" class="glass-card rounded-3xl p-6 md:p-10 text-center max-w-2xl mx-auto w-full my-auto">
+            <div class="flex justify-center items-center gap-4 mb-4">
+                <div class="w-28 h-28 md:w-32 md:h-32 bg-gradient-to-tr from-emerald-600 to-amber-500 rounded-3xl p-3 shadow-md flex items-center justify-center relative">
+                    <!-- SVG Sports Captain Mascot -->
+                    <svg viewBox="0 0 120 120" class="w-full h-full drop-shadow-sm">
+                        <circle cx="60" cy="60" r="50" fill="#ecfdf5"/>
+                        <!-- Headband / Sports Cap -->
+                        <path d="M 25 50 Q 60 25 95 50 L 98 42 Q 60 18 22 42 Z" fill="#065f46"/>
+                        <rect x="30" y="42" width="60" height="8" rx="4" fill="#f59e0b"/>
+                        <!-- Face -->
+                        <circle cx="60" cy="62" r="25" fill="#fed7aa"/>
+                        <!-- Eyes -->
+                        <circle cx="50" cy="58" r="3.5" fill="#1e293b"/>
+                        <circle cx="70" cy="58" r="3.5" fill="#1e293b"/>
+                        <!-- Cheerful Smile -->
+                        <path d="M 50 70 Q 60 80 70 70" stroke="#1e293b" stroke-width="3" fill="none" stroke-linecap="round"/>
+                        <circle cx="45" cy="65" r="3" fill="#f87171" opacity="0.6"/>
+                        <circle cx="75" cy="65" r="3" fill="#f87171" opacity="0.6"/>
+                        <!-- Sports Jersey & Whistle -->
+                        <path d="M 35 84 Q 60 92 85 84 L 88 108 Q 60 112 32 108 Z" fill="#10b981"/>
+                        <circle cx="60" cy="90" r="4" fill="#f59e0b"/>
+                    </svg>
+                    <span class="absolute -top-2 -right-2 bg-amber-500 text-white font-bold text-xs px-2.5 py-1 rounded-full border-2 border-white shadow-sm">
+                        🏅 Kapten Olahraga
+                    </span>
+                </div>
+            </div>
+
+            <h2 class="font-game text-2xl md:text-4xl font-extrabold text-emerald-950 mb-1 tracking-wide">
+                PETUALANGAN PJOK KELAS 4
+            </h2>
+            <p class="text-xs md:text-sm font-bold text-amber-600 mb-6">
+                Pendidikan Jasmani, Olahraga, dan Kesehatan Kurikulum Merdeka Kelas 4 SD/MI • Semester 1
+            </p>
+
+            <div class="bg-emerald-50/80 border-2 border-emerald-200 rounded-2xl p-5 mb-6 max-w-md mx-auto text-left">
+                <label for="student-name-input" class="block font-game text-slate-800 text-sm md:text-base mb-2 text-center">
+                    👋 Salam Sehat! Tuliskan Namamu:
+                </label>
+                <input type="text" id="student-name-input" placeholder="Tuliskan nama lengkapmu di sini..." 
+                    onkeydown="if(event.key === 'Enter') handleInstantLogin()"
+                    class="w-full px-4 py-3 rounded-xl border-2 border-emerald-300 focus:border-emerald-600 focus:outline-none text-center font-semibold text-slate-800 shadow-sm transition bg-white">
+                <p class="text-xs text-slate-500 mt-2 text-center">Tekan tombol <kbd class="px-1.5 py-0.5 bg-slate-200 rounded text-slate-700 font-bold">ENTER</kbd> atau klik tombol di bawah</p>
+            </div>
+
+            <!-- INSTANT LOGIN BUTTON (NO LOADING / BUFFERING) -->
+            <button onclick="handleInstantLogin()" class="font-game bg-gradient-to-r from-emerald-600 to-amber-500 hover:from-emerald-700 hover:to-amber-600 text-white font-bold text-lg md:text-xl px-8 py-3.5 rounded-2xl shadow-md transition w-full max-w-md flex items-center justify-center gap-2 mx-auto">
+                <span>🚀</span> MASUK / MULAI PETUALANGAN
+            </button>
+        </section>
+
+        <!-- SCREEN 2: MAIN DASHBOARD SCREEN (CLEAN & SIMPLE) -->
+        <section id="screen-dashboard" class="hidden glass-card rounded-3xl p-6 md:p-8 my-auto">
+            <div class="flex flex-col md:flex-row items-center justify-between border-b border-slate-200 pb-5 mb-6 gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-600 to-amber-500 flex items-center justify-center text-white text-2xl font-bold shadow-sm">
+                        🏃
+                    </div>
+                    <div>
+                        <span id="dash-user-badge" class="bg-emerald-100 text-emerald-800 font-bold px-3 py-1 rounded-full text-xs">
+                            Sahabat Sehat: Student
+                        </span>
+                        <h2 class="font-game text-2xl md:text-3xl font-extrabold text-slate-800 mt-1">
+                            Dashboard PJOK Kelas 4
+                        </h2>
+                    </div>
+                </div>
+
+                <!-- Guidance Mascot Badge -->
+                <div class="bg-amber-50 border border-amber-200 rounded-2xl px-4 py-2 flex items-center gap-2 text-xs font-semibold text-amber-900">
+                    <span class="text-lg">💬</span>
+                    <span>Pilih menu di bawah untuk mempelajari materi atau langsung mengerjakan kuis!</span>
+                </div>
+            </div>
+
+            <!-- 2 MAIN CLEAN SELECTION BUTTONS -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <!-- Option 1: MATERI -->
+                <div onclick="openMaterialScreen(1)" class="hover-card bg-gradient-to-br from-emerald-50 to-teal-50/60 border-2 border-emerald-200 rounded-3xl p-6 shadow-sm cursor-pointer transition flex flex-col justify-between">
+                    <div>
+                        <div class="w-14 h-14 rounded-2xl bg-emerald-600 text-white flex items-center justify-center text-2xl font-bold mb-4 shadow-sm">
+                            📖
+                        </div>
+                        <h3 class="font-game text-2xl font-extrabold text-emerald-950 mb-2">
+                            MATERI PEMBELAJARAN
+                        </h3>
+                        <p class="text-xs md:text-sm text-slate-600 font-medium leading-relaxed mb-4">
+                            Pelajari variasi gerak dasar permainan bola besar, bola kecil, atletik, seni beladiri pencak silat, hingga kebugaran jasmani dan pola hidup sehat.
+                        </p>
+                    </div>
+                    <div class="inline-flex items-center text-xs md:text-sm font-bold text-emerald-700 gap-1.5 pt-3 border-t border-emerald-100">
+                        <span>Buka Modul Materi Lengkap</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+                </div>
+
+                <!-- Option 2: KUIS -->
+                <div onclick="startQuiz(true)" class="hover-card bg-gradient-to-br from-amber-50 to-orange-50/60 border-2 border-amber-200 rounded-3xl p-6 shadow-sm cursor-pointer transition flex flex-col justify-between">
+                    <div>
+                        <div class="w-14 h-14 rounded-2xl bg-amber-500 text-white flex items-center justify-center text-2xl font-bold mb-4 shadow-sm">
+                            📝
+                        </div>
+                        <h3 class="font-game text-2xl font-extrabold text-amber-950 mb-2">
+                            KUIS EVALUASI (50 SOAL)
+                        </h3>
+                        <p class="text-xs md:text-sm text-slate-600 font-medium leading-relaxed mb-4">
+                            Uji pemahamanmu dengan 50 Soal Evaluasi terintegrasi. Raih nilai minimal KKM (75) untuk membuka Sertifikat Digital!
+                        </p>
+                    </div>
+                    <div class="inline-flex items-center text-xs md:text-sm font-bold text-amber-700 gap-1.5 pt-3 border-t border-amber-100">
+                        <span>Mulai Kuis 50 Soal Sekarang</span>
+                        <i class="fa-solid fa-play"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CLEAN LIST OF LEARNING CHAPTERS (NO SUMMARY TEXT OR EMOJI MESS) -->
+            <div class="bg-white border-2 border-slate-200 rounded-2xl p-5 shadow-sm">
+                <h4 class="font-game text-base md:text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-list-check text-emerald-600"></i>
+                    <span>Daftar Bab Pembelajaran (Semester 1)</span>
+                </h4>
+
+                <div class="grid grid-cols-1 gap-2.5">
+                    <button onclick="openMaterialScreen(1)" class="w-full text-left bg-slate-50 hover:bg-emerald-50 border border-slate-200 hover:border-emerald-300 rounded-xl px-4 py-3 font-semibold text-slate-700 hover:text-emerald-900 transition flex items-center justify-between text-xs md:text-sm">
+                        <span>BAB 1: VARIASI GERAK DASAR PERMAINAN BOLA BESAR</span>
+                        <i class="fa-solid fa-chevron-right text-slate-400"></i>
+                    </button>
+
+                    <button onclick="openMaterialScreen(2)" class="w-full text-left bg-slate-50 hover:bg-emerald-50 border border-slate-200 hover:border-emerald-300 rounded-xl px-4 py-3 font-semibold text-slate-700 hover:text-emerald-900 transition flex items-center justify-between text-xs md:text-sm">
+                        <span>BAB 2: VARIASI GERAK DASAR PERMAINAN BOLA KECIL</span>
+                        <i class="fa-solid fa-chevron-right text-slate-400"></i>
+                    </button>
+
+                    <button onclick="openMaterialScreen(3)" class="w-full text-left bg-slate-50 hover:bg-emerald-50 border border-slate-200 hover:border-emerald-300 rounded-xl px-4 py-3 font-semibold text-slate-700 hover:text-emerald-900 transition flex items-center justify-between text-xs md:text-sm">
+                        <span>BAB 3: VARIASI GERAK DASAR ATLETIK</span>
+                        <i class="fa-solid fa-chevron-right text-slate-400"></i>
+                    </button>
+
+                    <button onclick="openMaterialScreen(4)" class="w-full text-left bg-slate-50 hover:bg-emerald-50 border border-slate-200 hover:border-emerald-300 rounded-xl px-4 py-3 font-semibold text-slate-700 hover:text-emerald-900 transition flex items-center justify-between text-xs md:text-sm">
+                        <span>BAB 4: GERAK DASAR SENI BELADIRI PENCAK SILAT</span>
+                        <i class="fa-solid fa-chevron-right text-slate-400"></i>
+                    </button>
+
+                    <button onclick="openMaterialScreen(5)" class="w-full text-left bg-slate-50 hover:bg-emerald-50 border border-slate-200 hover:border-emerald-300 rounded-xl px-4 py-3 font-semibold text-slate-700 hover:text-emerald-900 transition flex items-center justify-between text-xs md:text-sm">
+                        <span>BAB 5: LATIHAN KEBUGARAN JASMANI DAN POLA HIDUP SEHAT</span>
+                        <i class="fa-solid fa-chevron-right text-slate-400"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SCREEN 3: LEARNING MATERIALS MODULES (CHAPTERS 1 - 5) -->
+        <section id="screen-material" class="hidden glass-card rounded-3xl p-6 md:p-8 my-auto max-h-[85vh] overflow-y-auto">
+            <!-- Header Bar inside Material Screen -->
+            <div class="flex flex-wrap items-center justify-between border-b border-slate-200 pb-4 mb-6 gap-3 sticky top-0 bg-white/95 backdrop-blur z-20 py-2">
+                <div class="flex items-center gap-2">
+                    <button onclick="openHomeModal()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 px-3 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-arrow-left"></i>
+                        <span>Kembali ke Beranda</span>
+                    </button>
+                    <h2 class="font-game text-xl md:text-2xl font-extrabold text-slate-800">
+                        📖 Modul Pembelajaran PJOK
+                    </h2>
+                </div>
+
+                <button onclick="startQuiz(true)" class="font-game bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 rounded-xl text-xs font-bold shadow-sm transition flex items-center gap-1.5">
+                    <span>📝</span>
+                    <span>MULAI KUIS 50 SOAL</span>
+                </button>
+            </div>
+
+            <!-- Material Tabs -->
+            <div class="flex flex-wrap gap-2 mb-6 border-b border-slate-200 pb-3">
+                <button onclick="switchMaterialTab(1)" id="tab-mat-1" class="font-game text-xs md:text-sm px-4 py-2 rounded-xl bg-emerald-600 text-white font-bold transition">
+                    Bab 1: Bola Besar
+                </button>
+                <button onclick="switchMaterialTab(2)" id="tab-mat-2" class="font-game text-xs md:text-sm px-4 py-2 rounded-xl bg-slate-200 text-slate-700 hover:bg-slate-300 font-bold transition">
+                    Bab 2: Bola Kecil
+                </button>
+                <button onclick="switchMaterialTab(3)" id="tab-mat-3" class="font-game text-xs md:text-sm px-4 py-2 rounded-xl bg-slate-200 text-slate-700 hover:bg-slate-300 font-bold transition">
+                    Bab 3: Atletik
+                </button>
+                <button onclick="switchMaterialTab(4)" id="tab-mat-4" class="font-game text-xs md:text-sm px-4 py-2 rounded-xl bg-slate-200 text-slate-700 hover:bg-slate-300 font-bold transition">
+                    Bab 4: Pencak Silat
+                </button>
+                <button onclick="switchMaterialTab(5)" id="tab-mat-5" class="font-game text-xs md:text-sm px-4 py-2 rounded-xl bg-slate-200 text-slate-700 hover:bg-slate-300 font-bold transition">
+                    Bab 5: Kebugaran Jasmani
+                </button>
+            </div>
+
+            <!-- BAB 1 CONTENT -->
+            <div id="mat-content-1" class="space-y-6">
+                <div class="bg-white border-2 border-emerald-100 rounded-2xl p-5 shadow-sm">
+                    <h3 class="font-game text-lg text-emerald-950 font-bold mb-3 flex items-center gap-2">
+                        <span>⚽</span> BAB 1: VARIASI GERAK DASAR DALAM PERMAINAN BOLA BESAR
+                    </h3>
+
+                    <!-- Key Definitions Concept Box -->
+                    <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-4 mb-6 text-xs md:text-sm">
+                        <h4 class="font-bold text-emerald-900 mb-2">💡 Konsep Tiga Gerak Dasar:</h4>
+                        <ul class="list-disc list-inside space-y-1 text-slate-700">
+                            <li><b>Gerak Lokomotor:</b> Gerakan berpindah tempat dari satu titik ke titik lain (Contoh: Berlari, melompat maju, berjalan).</li>
+                            <li><b>Gerak Non-Lokomotor:</b> Gerakan tanpa berpindah tempat (Contoh: Menekuk lutut, mengayun lengan, membungkuk).</li>
+                            <li><b>Gerak Manipulatif:</b> Gerakan yang melibatkan alat atau objek (Contoh: Menendang bola, melempar bola, menangkap bola).</li>
+                        </ul>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs md:text-sm mb-6">
+                        <!-- Sepak Bola -->
+                        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4">
+                            <h4 class="font-bold text-emerald-800 text-base mb-2">⚽ 1. Sepak Bola</h4>
+                            <p class="text-slate-600 mb-2"><b>Teknik & Variasi Gerak:</b></p>
+                            <ul class="list-disc list-inside space-y-1 text-slate-700">
+                                <li><b>Menendang Bola:</b> Menggunakan kaki bagian dalam, kaki bagian luar, dan punggung kaki.</li>
+                                <li><b>Menghentikan (Mengontrol) Bola:</b> Menggunakan telapak kaki, kaki bagian dalam, atau dada.</li>
+                                <li><b>Menggiring Bola (Dribbling):</b> Kombinasi berlari sambil mendorong bola pelan-pelan.</li>
+                            </ul>
+                        </div>
+
+                        <!-- Bola Voli -->
+                        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4">
+                            <h4 class="font-bold text-teal-800 text-base mb-2">🏐 2. Permainan Bola Voli</h4>
+                            <p class="text-slate-600 mb-2"><b>Teknik & Variasi Gerak:</b></p>
+                            <ul class="list-disc list-inside space-y-1 text-slate-700">
+                                <li><b>Passing Bawah:</b> Menekuk lutut, merapatkan kedua lengan, mengayun dari bawah ke atas.</li>
+                                <li><b>Passing Atas:</b> Menggunakan jari-jari tangan di atas dahi dengan mendorong bola.</li>
+                                <li><b>Servis Bawah & Atas:</b> Pukulan awal untuk memulai jalannya pertandingan bola voli.</li>
+                            </ul>
+                        </div>
+
+                        <!-- Bola Basket -->
+                        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4">
+                            <h4 class="font-bold text-amber-800 text-base mb-2">🏀 3. Permainan Bola Basket</h4>
+                            <p class="text-slate-600 mb-2"><b>Teknik & Variasi Gerak:</b></p>
+                            <ul class="list-disc list-inside space-y-1 text-slate-700">
+                                <li><b>Chest Pass:</b> Operan dada setinggi dada teman.</li>
+                                <li><b>Bounce Pass:</b> Operan pantulan ke lantai.</li>
+                                <li><b>Overhead Pass:</b> Operan di atas kepala.</li>
+                                <li><b>Dribbling:</b> Memantulkan bola ke lantai sambil berjalan/berlari.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BAB 2 CONTENT -->
+            <div id="mat-content-2" class="hidden space-y-6">
+                <div class="bg-white border-2 border-teal-100 rounded-2xl p-5 shadow-sm">
+                    <h3 class="font-game text-lg text-teal-950 font-bold mb-3 flex items-center gap-2">
+                        <span>⚾</span> BAB 2: VARIASI GERAK DASAR DALAM PERMAINAN BOLA KECIL
+                    </h3>
+
+                    <div class="bg-teal-50 border border-teal-200 rounded-xl p-4 mb-6 text-xs md:text-sm">
+                        <h4 class="font-bold text-teal-900 mb-2">⚾ Permainan Kasti / Rounders:</h4>
+                        <p class="text-slate-700 leading-relaxed">
+                            Permainan kasti adalah permainan beregu yang mengutamakan kerjasama, ketangkasan, serta kejujuran. Terdiri dari tim pemukul dan tim penjaga.
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs md:text-sm mb-4">
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            <h4 class="font-bold text-teal-900 mb-2">🎯 1. Variasi Melempar & Menangkap Bola:</h4>
+                            <ul class="list-disc list-inside space-y-1 text-slate-700">
+                                <li><b>Lemparan Melambung:</b> Digunakan untuk melempar jarak jauh.</li>
+                                <li><b>Lemparan Mendatar:</b> Digunakan untuk sasaran lurus mengarah ke teman atau pemukul.</li>
+                                <li><b>Lemparan Menyusur Tanah:</b> Gelindingan bola bawah.</li>
+                                <li><b>Menangkap Bola:</b> Menggunakan dua telapak tangan membentuk seperti mangkuk.</li>
+                            </ul>
+                        </div>
+
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            <h4 class="font-bold text-amber-900 mb-2">🏏 2. Memukul Bola & Berlari:</h4>
+                            <ul class="list-disc list-inside space-y-1 text-slate-700">
+                                <li><b>Memukul Bola:</b> Menggunakan tongkat pemukul kayu dengan ayunan kuat dari samping badan.</li>
+                                <li><b>Berlari ke Tiang Hinggap (Base):</b> Setelah memukul, pemain berlari melintasi tiang hinggap aman tanpa tersentuh pelemparan bola lawan.</li>
+                                <li><b>Sikap Sportif:</b> Menghormati keputusan wasit dan menghargai lawan.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BAB 3 CONTENT -->
+            <div id="mat-content-3" class="hidden space-y-6">
+                <div class="bg-white border-2 border-amber-100 rounded-2xl p-5 shadow-sm">
+                    <h3 class="font-game text-lg text-amber-950 font-bold mb-3 flex items-center gap-2">
+                        <span>🏃</span> BAB 3: VARIASI GERAK DASAR ATLETIK
+                    </h3>
+
+                    <p class="text-xs md:text-sm text-slate-700 mb-4 leading-relaxed">
+                        Atletik merupakan ibu dari semua cabang olahraga (Induk Olahraga). Terdiri dari variasi dasar jalan, lari, lompat, dan lempar.
+                    </p>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 text-xs md:text-sm mb-4">
+                        <div class="bg-amber-50 p-3 rounded-xl border border-amber-200">
+                            <h4 class="font-bold text-amber-900 mb-1">🚶 Jalan</h4>
+                            <p class="text-slate-600">Jalan maju, mundur, menyamping, dan jalan cepat. Tumit menyentuh tanah terlebih dahulu.</p>
+                        </div>
+                        <div class="bg-amber-50 p-3 rounded-xl border border-amber-200">
+                            <h4 class="font-bold text-amber-900 mb-1">🏃 Lari</h4>
+                            <p class="text-slate-600">Lari pelan (jogging), lari cepat (sprint), dan lari berbelok-belok (zig-zag).</p>
+                        </div>
+                        <div class="bg-amber-50 p-3 rounded-xl border border-amber-200">
+                            <h4 class="font-bold text-amber-900 mb-1">🪂 Lompat & Loncat</h4>
+                            <p class="text-slate-600">Lompat jauh (awalan berlari, tolakan satu kaki, melayang di udara, mendarat dua kaki).</p>
+                        </div>
+                        <div class="bg-amber-50 p-3 rounded-xl border border-amber-200">
+                            <h4 class="font-bold text-amber-900 mb-1">🚀 Lempar Turbo</h4>
+                            <p class="text-slate-600">Lempar roket/turbo menggunakan kekuatan ayunan lengan dan tumpuan kaki sekuat tenaga.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BAB 4 CONTENT -->
+            <div id="mat-content-4" class="hidden space-y-6">
+                <div class="bg-white border-2 border-indigo-100 rounded-2xl p-5 shadow-sm">
+                    <h3 class="font-game text-lg text-indigo-950 font-bold mb-3 flex items-center gap-2">
+                        <span>🥋</span> BAB 4: GERAK DASAR SENI BELADIRI PENCAK SILAT
+                    </h3>
+
+                    <p class="text-xs md:text-sm text-slate-700 mb-4 leading-relaxed">
+                        Pencak Silat adalah seni beladiri asli kebanggaan Indonesia yang menjunjung tinggi kebudayaan, kedisiplinan, dan kesantunan.
+                    </p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs md:text-sm mb-4">
+                        <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-200">
+                            <h4 class="font-bold text-indigo-900 mb-2">🦵 Kuda-kuda & Sikap Pasang:</h4>
+                            <ul class="list-disc list-inside space-y-1 text-slate-700">
+                                <li><b>Kuda-kuda Depan, Belakang, Samping, Tengah:</b> Posisi menapakkan kaki untuk memperkokoh tumpuan tubuh.</li>
+                                <li><b>Sikap Pasang & Pola Langkah:</b> Kesiapsiagaan tubuh dikombinasikan dengan gerak langkah (lurus, zig-zag, huruf U).</li>
+                            </ul>
+                        </div>
+
+                        <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-200">
+                            <h4 class="font-bold text-indigo-900 mb-2">👊 Pukulan, Tendangan, Tangkisan, Elakan:</h4>
+                            <ul class="list-disc list-inside space-y-1 text-slate-700">
+                                <li><b>Serangan:</b> Pukulan lurus/bandul, tendangan lurus/T.</li>
+                                <li><b>Belaan:</b> Tangkisan dalam/luar serta elakan untuk menghindari serangan lawan.</li>
+                                <li><b>Nilai Luhur:</b> Beladiri digunakan untuk melindungi diri dan membantu orang lain, bukan untuk kesombongan.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BAB 5 CONTENT -->
+            <div id="mat-content-5" class="hidden space-y-6">
+                <div class="bg-white border-2 border-rose-100 rounded-2xl p-5 shadow-sm">
+                    <h3 class="font-game text-lg text-rose-950 font-bold mb-3 flex items-center gap-2">
+                        <span>🍎</span> BAB 5: LATIHAN KEBUGARAN JASMANI DAN POLA HIDUP SEHAT
+                    </h3>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs md:text-sm mb-4">
+                        <div class="bg-rose-50 p-4 rounded-xl border border-rose-200">
+                            <h4 class="font-bold text-rose-900 mb-2">💪 Bentuk Latihan Kebugaran Jasmani:</h4>
+                            <ul class="list-disc list-inside space-y-1 text-slate-700">
+                                <li><b>Daya Tahan (Endurance):</b> Jogging 12 menit, lari bolak-balik (shuttle run).</li>
+                                <li><b>Kekuatan (Strength):</b> Push-up (otot dada & lengan), Sit-up (otot perut), Back-up (otot punggung), Squat jump (otot kaki).</li>
+                                <li><b>Kelenturan & Keseimbangan:</b> Cium lutut, berdiri sikap lilin, berdiri satu kaki.</li>
+                            </ul>
+                        </div>
+
+                        <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-200">
+                            <h4 class="font-bold text-emerald-900 mb-2">🥗 Kebersihan Diri & Makanan Gizi Seimbang:</h4>
+                            <ul class="list-disc list-inside space-y-1 text-slate-700">
+                                <li><b>Kebersihan Diri:</b> Mandi 2x sehari, mencuci tangan memakai sabun, memotong kuku.</li>
+                                <li><b>Makanan Gizi Seimbang (Isi Piringku):</b> Karbohidrat (nasi/jagung), Protein (ikan/daging/tahu), Sayuran, Buah-buahan, serta Air Putih secukupnya.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SCREEN 4: QUIZ EVALUATION SCREEN (STRICTLY NO "BACA MATERI" BUTTON) -->
+        <section id="screen-quiz" class="hidden glass-card rounded-3xl p-6 md:p-8 my-auto">
+            <!-- Quiz Header Bar -->
+            <div class="flex flex-wrap items-center justify-between border-b border-slate-200 pb-4 mb-6 gap-2">
+                <div>
+                    <span id="quiz-progress-badge" class="font-game text-xs md:text-sm bg-emerald-100 text-emerald-800 px-3.5 py-1 rounded-full font-bold border border-emerald-200">
+                        SOAL 1 DARI 50
+                    </span>
+                    <h3 id="quiz-user-badge" class="font-game text-base md:text-lg font-bold text-slate-800 mt-1">
+                        Sahabat Sehat: Student
+                    </h3>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <div class="bg-amber-100 border border-amber-300 px-4 py-1.5 rounded-xl text-amber-900 font-game font-bold text-sm">
+                        ⭐ Skor: <span id="quiz-score-display">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question Card Box -->
+            <div class="bg-white border-2 border-slate-200 rounded-2xl p-5 md:p-6 shadow-sm mb-6">
+                <div class="flex items-center justify-between mb-3">
+                    <span id="question-chapter-badge" class="px-3 py-1 rounded-md text-xs font-bold bg-emerald-100 text-emerald-900">
+                        Bab 1
+                    </span>
+                    <span id="question-difficulty-badge" class="px-3 py-1 rounded-md text-xs font-bold bg-slate-100 text-slate-700">
+                        Level: Sedang
+                    </span>
+                </div>
+
+                <p id="question-text" class="font-game text-lg md:text-2xl font-bold text-slate-800 leading-snug mb-6">
+                    Memuat soal...
+                </p>
+
+                <!-- 4 Options Grid -->
+                <div id="options-container" class="grid grid-cols-1 gap-3">
+                </div>
+            </div>
+
+            <!-- Feedback & Explanation Box -->
+            <div id="quiz-feedback-box" class="hidden border-2 rounded-2xl p-5 mb-6 transition-all duration-200">
+                <div class="flex items-center gap-3 mb-2">
+                    <span id="feedback-icon" class="text-2xl"></span>
+                    <h4 id="feedback-title" class="font-game text-xl font-bold"></h4>
+                </div>
+                <div id="feedback-explanation" class="text-xs md:text-sm text-slate-700 leading-relaxed mb-4">
+                </div>
+                <button onclick="nextQuizQuestion()" class="font-game bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 py-3 rounded-xl shadow-sm transition flex items-center gap-2">
+                    <span>LANJUT KE SOAL BERIKUTNYA</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- SCREEN 5: RESULT EVALUATION SCREEN (KKM 75 & CERTIFICATE CONDITION) -->
+        <section id="screen-result" class="hidden glass-card rounded-3xl p-6 md:p-10 text-center max-w-2xl mx-auto w-full my-auto">
+            <div id="result-emoji" class="text-5xl mb-3">🎉</div>
+            <h2 class="font-game text-3xl md:text-4xl font-extrabold text-slate-800 mb-1">
+                EVALUASI KUIS SELESAI!
+            </h2>
+            <p id="result-user-title" class="font-game text-lg text-emerald-800 font-bold mb-6">
+                Hebat, Sahabat Sehat!
+            </p>
+
+            <div class="bg-gradient-to-br from-emerald-50 to-amber-50 border-2 border-emerald-200 rounded-2xl p-6 mb-6 shadow-inner">
+                <p class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Nilai Akhir Evaluasi</p>
+                <div class="font-game text-5xl md:text-6xl font-black text-emerald-900 mb-2">
+                    <span id="final-score-val">0</span> <span class="text-2xl text-slate-400 font-semibold">/ 100</span>
+                </div>
+                
+                <div id="kkm-status-badge" class="inline-block px-4 py-1.5 rounded-full font-game font-bold text-sm mb-4">
+                    STATUS KKM
+                </div>
+
+                <div class="grid grid-cols-2 gap-3 text-xs md:text-sm font-semibold border-t border-emerald-200/60 pt-4">
+                    <div class="bg-emerald-100/80 text-emerald-900 p-2.5 rounded-xl border border-emerald-200">
+                        ✅ Benar: <span id="final-correct-val" class="text-base font-bold">0</span> Soal
+                    </div>
+                    <div class="bg-rose-100/80 text-rose-900 p-2.5 rounded-xl border border-rose-200">
+                        ❌ Salah: <span id="final-wrong-val" class="text-base font-bold">0</span> Soal
+                    </div>
+                </div>
+            </div>
+
+            <!-- Motivational Message Box for Score < 75 -->
+            <div id="result-motivation-box" class="hidden bg-amber-50 border-2 border-amber-200 rounded-2xl p-4 mb-6 text-xs md:text-sm text-amber-900 font-semibold">
+                💪 Tetap semangat! Nilaimu belum mencapai KKM (75). Ayo baca lagi materi pembelajaran dan ulangi kuis ini!
+            </div>
+
+            <div class="flex flex-col sm:flex-row justify-center gap-3">
+                <button id="btn-cert-action" onclick="openCertificateModal()" class="font-game bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-bold px-6 py-3.5 rounded-2xl shadow-md transition flex items-center justify-center gap-2">
+                    <span>🏆</span> LIHAT / CETAK SERTIFIKAT DIGITAL
+                </button>
+                <button id="btn-read-material-again" onclick="openMaterialScreen(1)" class="hidden font-game bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 py-3.5 rounded-2xl shadow-md transition items-center justify-center gap-2">
+                    <span>📖</span> BACA MATERI LAGI
+                </button>
+                <button onclick="restartQuiz()" class="font-game bg-slate-700 hover:bg-slate-800 text-white font-bold px-6 py-3.5 rounded-2xl shadow-md transition flex items-center justify-center gap-2">
+                    <span>🔄</span> ULANGI KUIS DARI NO. 1
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- CLEAN POPUP MODAL FOR HOME BUTTON (2 CLEAN OPTIONS) -->
+    <div id="home-modal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm p-4 flex items-center justify-center">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 border-4 border-emerald-500 relative shadow-2xl text-center">
+            <button onclick="closeHomeModal()" class="absolute top-4 right-4 bg-slate-100 hover:bg-slate-200 text-slate-600 w-8 h-8 rounded-full font-bold text-base flex items-center justify-center transition">
+                ✕
+            </button>
+
+            <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center text-2xl mx-auto mb-3">
+                ⚽
+            </div>
+            <h3 class="font-game text-xl font-bold text-slate-800 mb-1">Pilih Menu Navigasi</h3>
+            <p class="text-xs text-slate-500 mb-6">Silakan pilih tujuan pembelajaranmu:</p>
+
+            <div class="space-y-3">
+                <button onclick="closeHomeModal(); openMaterialScreen(1)" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-game font-bold py-3.5 px-4 rounded-2xl text-base shadow-sm transition flex items-center justify-center gap-2">
+                    <span>📖</span> MATERI PEMBELAJARAN
+                </button>
+                <button onclick="closeHomeModal(); startQuiz(true)" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-game font-bold py-3.5 px-4 rounded-2xl text-base shadow-sm transition flex items-center justify-center gap-2">
+                    <span>📝</span> KUIS EVALUASI (50 SOAL)
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CERTIFICATE MODAL (PRINT FRIENDLY) -->
+    <div id="certificate-modal" class="hidden fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-sm p-4 overflow-y-auto flex items-center justify-center">
+        <div class="bg-white rounded-3xl max-w-4xl w-full p-6 md:p-10 border-8 border-amber-400 relative shadow-2xl my-8">
+            <button onclick="closeCertificateModal()" class="no-print absolute top-4 right-4 bg-slate-100 hover:bg-slate-200 text-slate-600 w-10 h-10 rounded-full font-bold text-xl flex items-center justify-center transition">
+                ✕
+            </button>
+
+            <!-- Printable Certificate Body -->
+            <div class="border-4 border-dashed border-emerald-500 rounded-2xl p-6 md:p-8 text-center bg-gradient-to-b from-amber-50/40 via-white to-emerald-50/30 relative overflow-hidden">
+                
+                <!-- STAMP BADGE -->
+                <div class="absolute top-4 right-4 border-4 border-emerald-600 text-emerald-700 rounded-full p-2 w-20 h-20 md:w-24 md:h-24 flex flex-col items-center justify-center rotate-12 opacity-85 font-black text-[10px] md:text-xs tracking-wider uppercase">
+                    <span>PASSED</span>
+                    <span class="text-emerald-800 border-t border-emerald-600 pt-0.5">LULUS KKM</span>
+                </div>
+
+                <div class="w-16 h-16 mx-auto mb-2 text-amber-500">
+                    <i class="fa-solid fa-award text-5xl"></i>
+                </div>
+                
+                <h3 class="font-game text-xs tracking-widest uppercase font-bold text-emerald-900 mb-1">
+                    CERTIFICATE OF ACHIEVEMENT
+                </h3>
+                <h2 class="font-game text-2xl md:text-3xl font-extrabold text-slate-800 mb-4">
+                    PETUALANGAN PJOK KELAS 4
+                </h2>
+
+                <p class="text-xs md:text-sm text-slate-600 italic mb-2">Sertifikat ini secara terhormat diberikan kepada:</p>
+                <h1 id="cert-student-name" class="font-game text-2xl md:text-4xl font-black text-emerald-900 border-b-2 border-emerald-400 inline-block px-8 py-1 mb-3">
+                    [NAMA SISWA]
+                </h1>
+
+                <p id="cert-predicate-text" class="font-game text-lg font-bold text-amber-600 mb-4">
+                    🏆 JUARA BINTANG OLAHRAGA
+                </p>
+
+                <p class="text-xs md:text-sm text-slate-700 max-w-2xl mx-auto leading-relaxed mb-6">
+                    Telah berhasil menyelesaikan 50 Soal Evaluasi PJOK Kurikulum Merdeka Kelas 4 SD/MI Semester 1 dengan hasil melampaui KKM (75).
+                </p>
+
+                <div class="inline-flex flex-wrap justify-center gap-6 bg-emerald-50 border border-emerald-200 rounded-2xl px-6 py-3 mb-6 text-xs md:text-sm font-bold text-emerald-950">
+                    <div>Nilai Akhir: <span id="cert-score-display" class="text-emerald-700 font-extrabold">0</span> / 100</div>
+                    <div>Status: <span class="text-emerald-600 font-extrabold">TUNTAS KKM (75)</span></div>
+                    <div>Tanggal: <span id="cert-date-display" class="text-slate-700">-</span></div>
+                </div>
+
+                <div class="flex justify-between items-end text-left border-t border-slate-200 pt-4 text-xs text-slate-500">
+                    <div>
+                        <p class="font-bold text-slate-800">Media Pembelajaran Interaktif PJOK</p>
+                        <p>PJOK Kurikulum Merdeka Kelas 4 SD/MI</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="font-bold text-slate-800">Identitas Pengembang:</p>
+                        <p class="text-emerald-800 font-bold">Pengembang: Giga Inovation | 081329200985</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="no-print mt-6 flex justify-center">
+                <button onclick="window.print()" class="font-game bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-8 py-3 rounded-2xl shadow-md transition flex items-center gap-2">
+                    <i class="fa-solid fa-print"></i> CETAK / SIMPAN PDF SERTIFIKAT
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PERSISTENT FOOTER WITH DEVELOPER IDENTITY -->
+    <footer class="bg-white/90 backdrop-blur border-t border-slate-200 py-3 text-center text-xs md:text-sm font-semibold text-slate-600 mt-auto">
+        Pengembang: <span class="text-emerald-800 font-bold">Giga Inovation</span> | 081329200985
+    </footer>
+
+    <script>
+        /* STATE VARIABLES */
+        let studentName = "";
+        let currentQuestionIndex = 0;
+        let score = 0; // 50 questions x 2 points = 100 max
+        let correctCount = 0;
+        let wrongCount = 0;
+        let isMuted = false;
+        let globalVolume = 0.8;
+        let audioCtx = null;
+
+        /* WEB AUDIO API SYNTHESIZER FOR SOUND EFFECTS */
+        function initAudio() {
+            if (!audioCtx) {
+                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                if (AudioContextClass) {
+                    audioCtx = new AudioContextClass();
+                }
+            }
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        function playSFX(type) {
+            if (isMuted) return;
+            initAudio();
+            if (!audioCtx) return;
+
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            const now = audioCtx.currentTime;
+            gain.gain.setValueAtTime(globalVolume * 0.3, now);
+
+            if (type === 'click') {
+                osc.frequency.setValueAtTime(450, now);
+                osc.frequency.exponentialRampToValueAtTime(800, now + 0.07);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.07);
+                osc.start(now);
+                osc.stop(now + 0.07);
+            } else if (type === 'correct') {
+                osc.frequency.setValueAtTime(523.25, now);
+                osc.frequency.setValueAtTime(659.25, now + 0.1);
+                osc.frequency.setValueAtTime(783.99, now + 0.2);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.35);
+                osc.start(now);
+                osc.stop(now + 0.35);
+            } else if (type === 'wrong') {
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(220, now);
+                osc.frequency.setValueAtTime(160, now + 0.15);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+                osc.start(now);
+                osc.stop(now + 0.3);
+            } else if (type === 'fanfare') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(523.25, now);
+                osc.frequency.setValueAtTime(659.25, now + 0.12);
+                osc.frequency.setValueAtTime(783.99, now + 0.24);
+                osc.frequency.setValueAtTime(1046.50, now + 0.36);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.6);
+                osc.start(now);
+                osc.stop(now + 0.6);
+            }
+        }
+
+        /* TEXT TO SPEECH (WEB SPEECH API) */
+        function speakNarrator(text) {
+            if (isMuted) return;
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'id-ID';
+                utterance.volume = globalVolume;
+                utterance.rate = 0.95;
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        function toggleMute() {
+            isMuted = !isMuted;
+            const icon = document.getElementById('icon-audio');
+            if (isMuted) {
+                icon.className = "fa-solid fa-volume-xmark text-rose-600";
+                window.speechSynthesis.cancel();
+            } else {
+                icon.className = "fa-solid fa-volume-high text-emerald-600";
+                playSFX('click');
+            }
+        }
+
+        function changeVolume(val) {
+            globalVolume = parseFloat(val);
+        }
+
+        function showScreen(screenId) {
+            playSFX('click');
+            const screens = ['screen-login', 'screen-dashboard', 'screen-material', 'screen-quiz', 'screen-result'];
+            screens.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.classList.add('hidden');
+            });
+            document.getElementById(screenId).classList.remove('hidden');
+        }
+
+        function openHomeModal() {
+            if (studentName) {
+                playSFX('click');
+                document.getElementById('home-modal').classList.remove('hidden');
+            } else {
+                showScreen('screen-login');
+            }
+        }
+
+        function closeHomeModal() {
+            playSFX('click');
+            document.getElementById('home-modal').classList.add('hidden');
+        }
+
+        /* INSTANT LOGIN FUNCTION - ZERO LOADING / BUFFERING DELAY */
+        function handleInstantLogin() {
+            const input = document.getElementById('student-name-input');
+            const val = input.value.trim();
+            if (!val) {
+                alert('Tuliskan namamu terlebih dahulu!');
+                return;
+            }
+            studentName = val;
+            document.getElementById('dash-user-badge').textContent = `Sahabat Sehat: ${studentName}`;
+            
+            // INSTANT TRANSITION TO DASHBOARD (NO SPINNER / BUFFERING DELAY)
+            showScreen('screen-dashboard');
+            speakNarrator(`Salam sehat ${studentName}! Selamat belajar PJOK Kelas 4.`);
+        }
+
+        function openMaterialScreen(tabNum = 1) {
+            showScreen('screen-material');
+            switchMaterialTab(tabNum);
+        }
+
+        function switchMaterialTab(tabNum) {
+            playSFX('click');
+            for (let i = 1; i <= 5; i++) {
+                const btn = document.getElementById(`tab-mat-${i}`);
+                const content = document.getElementById(`mat-content-${i}`);
+                if (i === tabNum) {
+                    btn.className = "font-game text-xs md:text-sm px-4 py-2 rounded-xl bg-emerald-600 text-white font-bold transition";
+                    content.classList.remove('hidden');
+                } else {
+                    btn.className = "font-game text-xs md:text-sm px-4 py-2 rounded-xl bg-slate-200 text-slate-700 hover:bg-slate-300 font-bold transition";
+                    content.classList.add('hidden');
+                }
+            }
+        }
+
+        const questionsData = [
+            // BAB 1: VARIASI GERAK DASAR BOLA BESAR (10 SOAL)
+            {
+                chapter: "Bab 1: Permainan Bola Besar",
+                level: "Sedang",
+                question: "Gerakan berlari mengejar bola dalam permainan sepak bola termasuk ke dalam contoh gerak...",
+                options: ["Lokomotor", "Non-lokomotor", "Manipulatif", "Keseimbangan"],
+                answer: 0,
+                explanation: "Gerak lokomotor adalah gerakan yang mengalami perpindahan tempat, seperti berlari."
+            },
+            {
+                chapter: "Bab 1: Permainan Bola Besar",
+                level: "Sedang",
+                question: "Menendang bola ke arah gawang menggunakan kaki bagian dalam termasuk contoh gerak...",
+                options: ["Lokomotor", "Non-lokomotor", "Manipulatif", "Siklikal"],
+                answer: 2,
+                explanation: "Menendang bola melibatkan objek/alat (bola), sehingga termasuk gerak manipulatif."
+            },
+            {
+                chapter: "Bab 1: Permainan Bola Besar",
+                level: "Mudah",
+                question: "Posisi awal kaki saat melakukan gerakan menendang bola dengan kaki bagian dalam adalah...",
+                options: ["Kaki tumpu berada di samping bola", "Kaki tumpu berada jauh di belakang bola", "Kedua kaki disilangkan", "Kedua kaki melompat bersamaan"],
+                answer: 0,
+                explanation: "Kaki tumpu diletakkan di samping bola agar ayunan kaki penendang dapat mengenai bola secara akurat."
+            },
+            {
+                chapter: "Bab 1: Permainan Bola Besar",
+                level: "Sedang",
+                question: "Gerakan menghentikan bola dengan telapak kaki pada sepak bola bertujuan untuk...",
+                options: ["Mengoper bola ke lawan", "Menguasai dan mengontrol bola", "Membuat bola melambung tinggi", "Mencetak gol langsung"],
+                answer: 1,
+                explanation: "Telapak kaki digunakan untuk menahan laju bola agar bola langsung terkontrol di bawah penguasaan."
+            },
+            {
+                chapter: "Bab 1: Permainan Bola Besar",
+                level: "Sukar",
+                question: "Gerakan membungkuk dan menekuk lutut saat bersiap menerima bola voli tanpa berpindah tempat adalah gerak...",
+                options: ["Manipulatif", "Lokomotor", "Non-lokomotor", "Lokomotif"],
+                answer: 2,
+                explanation: "Menekuk lutut dan membungkuk tanpa berpindah tempat merupakan contoh gerak non-lokomotor."
+            },
+            {
+                chapter: "Bab 1: Permainan Bola Besar",
+                level: "Sedang",
+                question: "Pada permainan bola voli, gerakan memukul bola dari bawah mengayunkan lengan ke depan atas dinamakan...",
+                options: ["Passing bawah", "Passing atas", "Smash keras", "Blocking"],
+                answer: 0,
+                explanation: "Passing bawah dilakukan dengan mengayunkan kedua lengan dari bawah ke depan atas."
+            },
+            {
+                chapter: "Bab 1: Permainan Bola Besar",
+                level: "Mudah",
+                question: "Teknik operan setinggi dada kepada teman dalam permainan bola basket disebut...",
+                options: ["Bounce pass", "Chest pass", "Overhead pass", "Dribbling"],
+                answer: 1,
+                explanation: "Chest pass adalah operan bola basket yang dilakukan lurus dari depan dada."
+            },
+            {
+                chapter: "Bab 1: Permainan Bola Besar",
+                level: "Sedang",
+                question: "Teknik memantulkan bola basket ke lantai sambil berjalan atau berlari dinamakan...",
+                options: ["Shooting", "Dribbling", "Pivot", "Rebound"],
+                answer: 1,
+                explanation: "Dribbling (menggiring bola basket) dilakukan dengan memantulkan bola ke lantai menggunakan telapak jari-jari tangan."
+            },
+            {
+                chapter: "Bab 1: Permainan Bola Besar",
+                level: "Sedang",
+                question: "Gerakan menggiring bola basket sambil berjalan lurus menggabungkan variasi gerak...",
+                options: ["Lokomotor dan manipulatif", "Non-lokomotor dan akselerasi", "Hanya gerak lokomotor", "Hanya gerak non-lokomotor"],
+                answer: 0,
+                explanation: "Berjalan adalah gerak lokomotor, sedangkan memantulkan bola basket adalah gerak manipulatif."
+            },
+            {
+                chapter: "Bab 1: Permainan Bola Besar",
+                level: "Sukar",
+                question: "Operan memantul ke lantai untuk mengelabuhi lawan dalam bola basket dikenal dengan istilah...",
+                options: ["Chest pass", "Bounce pass", "Overhead pass", "Lay-up shoot"],
+                answer: 1,
+                explanation: "Bounce pass adalah operan dengan memantulkan bola ke lantai terlebih dahulu sebelum diterima teman."
+            },
+
+            // BAB 2: VARIASI GERAK DASAR BOLA KECIL (10 SOAL)
+            {
+                chapter: "Bab 2: Permainan Bola Kecil",
+                level: "Mudah",
+                question: "Salah satu contoh permainan tradisional bola kecil yang dimainkan secara beregu adalah...",
+                options: ["Sepak bola", "Kasti", "Bola voli", "Bola basket"],
+                answer: 1,
+                explanation: "Kasti merupakan salah satu permainan bola kecil yang menggunakan bola tenis kecil dan pemukul kayu."
+            },
+            {
+                chapter: "Bab 2: Permainan Bola Kecil",
+                level: "Sedang",
+                question: "Gerakan melempar bola kasti melambung bertujuan untuk...",
+                options: ["Melempar bola jarak jauh atau melambung tinggi", "Sasaran lurus menyusur tanah", "Operan pendek dan cepat", "Mematikan lawan di jarak dekat"],
+                answer: 0,
+                explanation: "Lemparan melambung menghasilkan lintasan bola tinggi parabola untuk jangkauan jarak jauh."
+            },
+            {
+                chapter: "Bab 2: Permainan Bola Kecil",
+                level: "Mudah",
+                question: "Posisi telapak tangan saat menangkap bola melambung pada permainan kasti adalah...",
+                options: ["Terbuka menghadap ke atas membentuk mangkuk", "Tertutup rapat mengepal", "Dibalik menghadap ke bawah", "Satu tangan di dalam saku"],
+                answer: 0,
+                explanation: "Menangkap bola melambung dilakukan dengan kedua tangan terbuka membentuk mangkuk menyambut jatuhnya bola."
+            },
+            {
+                chapter: "Bab 2: Permainan Bola Kecil",
+                level: "Sedang",
+                question: "Memukul bola kasti dengan ayunan tongkat kayu termasuk ke dalam jenis gerak...",
+                options: ["Lokomotor", "Non-lokomotor", "Manipulatif", "Otomatis"],
+                answer: 2,
+                explanation: "Memukul bola mengarahkan objek (bola) menggunakan alat (tongkat kasti) merupakan gerak manipulatif."
+            },
+            {
+                chapter: "Bab 2: Permainan Bola Kecil",
+                level: "Sukar",
+                question: "Setelah berhasil memukul bola kasti, pemukul harus segera melakukan gerakan lokomotor yaitu...",
+                options: ["Berlari menuju tiang hinggap (base)", "Duduk istirahat di lapangan", "Melompat-lompat di tempat", "Menangkap bola kembali"],
+                answer: 0,
+                explanation: "Pemain pemukul harus berlari cepat ke tiang hinggap aman sebelum dilempar bola oleh tim penjaga."
+            },
+            {
+                chapter: "Bab 2: Permainan Bola Kecil",
+                level: "Sedang",
+                question: "Gerakan melempar bola kasti mendatar dilakukan dengan ayunan tangan dari...",
+                options: ["Bawah ke depan atas", "Samping badan setinggi dada ke depan", "Atas kepala lurus ke bawah", "Putaran belakang tubuh"],
+                answer: 1,
+                explanation: "Lemparan mendatar diayunkan dari samping setinggi dada ke depan agar laju bola cepat dan lurus."
+            },
+            {
+                chapter: "Bab 2: Permainan Bola Kecil",
+                level: "Mudah",
+                question: "Jumlah tim atau regu dalam satu pertandingan kasti adalah...",
+                options: ["1 regu", "2 regu (pemukul dan penjaga)", "3 regu", "4 regu"],
+                answer: 1,
+                explanation: "Pertandingan kasti dimainkan oleh 2 regu: Regu Pemukul dan Regu Penjaga."
+            },
+            {
+                chapter: "Bab 2: Permainan Bola Kecil",
+                level: "Sedang",
+                question: "Sikap utama yang harus ditunjukkan saat bermain kasti bersama teman adalah...",
+                options: ["Sombong saat menang", "Sportif, jujur, dan bekerjasama", "Marah jika kalah", "Curang saat memukul"],
+                answer: 1,
+                explanation: "Sportivitas, kejujuran, dan kerjasama merupakan nilai moral utama dalam olahraga."
+            },
+            {
+                chapter: "Bab 2: Permainan Bola Kecil",
+                level: "Sukar",
+                question: "Variasi gerak menangkap bola menyusur tanah dilakukan dengan posisi badan...",
+                options: ["Berdiri tegak lurus", "Jongkok atau membungkuk dengan kaki ditekuk", "Melompat tinggi", "Berbaring terlentang"],
+                answer: 1,
+                explanation: "Guna menangkap bola yang menyusur tanah, pemain harus jongkok atau membungkukkan badan."
+            },
+            {
+                chapter: "Bab 2: Permainan Bola Kecil",
+                level: "Sedang",
+                question: "Alat pemukul dalam permainan kasti umumnya terbuat dari bahan...",
+                options: ["Karet tebal", "Kayu keras yang kuat", "Besi berat", "Kertas karton"],
+                answer: 1,
+                explanation: "Tongkat pemukul kasti terbuat dari kayu yang dibentuk dengan pegangan yang kuat."
+            },
+
+            // BAB 3: VARIASI GERAK DASAR ATLETIK (10 SOAL)
+            {
+                chapter: "Bab 3: Atletik",
+                level: "Mudah",
+                question: "Cabang olahraga yang sering disebut sebagai 'Mother of Sport' atau induk dari segala cabang olahraga adalah...",
+                options: ["Sepak bola", "Atletik", "Pencak silat", "Renang"],
+                answer: 1,
+                explanation: "Atletik disebut induk olahraga karena mencakup gerak dasar manusia (jalan, lari, lompat, lempar)."
+            },
+            {
+                chapter: "Bab 3: Atletik",
+                level: "Sedang",
+                question: "Perbedaan utama antara gerakan jalan dan berlari terletak pada...",
+                options: ["Bentuk pakaian yang digunakan", "Ada atau tidaknya fase melayang di udara", "Arah mata memandang", "Penggunaan sepatu"],
+                answer: 1,
+                explanation: "Pada saat berjalan, salah satu kaki selalu menyentuh tanah. Sedangkan saat berlari, ada fase kedua kaki melayang di udara."
+            },
+            {
+                chapter: "Bab 3: Atletik",
+                level: "Sedang",
+                question: "Lari pelan untuk membina daya tahan tubuh sering disebut juga dengan istilah...",
+                options: ["Sprint", "Jogging", "Maraton", "Zig-zag"],
+                answer: 1,
+                explanation: "Jogging adalah lari santai dengan kecepatan perlahan untuk menjaga kesehatan dan stamina."
+            },
+            {
+                chapter: "Bab 3: Atletik",
+                level: "Mudah",
+                question: "Lari cepat jarak pendek dalam perlombaan atletik dinamakan...",
+                options: ["Sprint", "Jogging", "Estafet", "Jalan santai"],
+                answer: 0,
+                explanation: "Sprint adalah lari dengan kecepatan maksimal dari garis start hingga garis finish."
+            },
+            {
+                chapter: "Bab 3: Atletik",
+                level: "Sukar",
+                question: "Urutan tahapan teknik dalam lompat jauh yang benar adalah...",
+                options: ["Awalan - Tolakan - Melayang - Mendarat", "Melayang - Awalan - Mendarat - Tolakan", "Mendarat - Tolakan - Awalan - Melayang", "Tolakan - Mendarat - Melayang - Awalan"],
+                answer: 0,
+                explanation: "Tahapan lompat jauh dimulai dari berlari (awalan), menolak dengan satu kaki (tolakan), melayang, dan mendarat dua kaki."
+            },
+            {
+                chapter: "Bab 3: Atletik",
+                level: "Sedang",
+                question: "Saat melakukan tolakan pada papan lompat jauh, jumlah kaki yang digunakan sebagai tumpuan adalah...",
+                options: ["Satu kaki terkuat", "Kedua kaki bersamaan", "Tanpa tumpuan kaki", "Menggunakan lutut"],
+                answer: 0,
+                explanation: "Tolakan lompat jauh harus menggunakan satu kaki tertumpu yang paling kuat."
+            },
+            {
+                chapter: "Bab 3: Atletik",
+                level: "Sukar",
+                question: "Pendaratan yang aman pada lompat jauh dilakukan menggunakan...",
+                options: ["Satu kaki beruntun", "Kedua kaki bersamaan dengan lutut mengeper", "Punggung terlentang", "Kepala terlebih dahulu"],
+                answer: 1,
+                explanation: "Mendarat dengan dua kaki bersamaan dan lutut ditekuk/mengeper mencegah cedera pada sendi."
+            },
+            {
+                chapter: "Bab 3: Atletik",
+                level: "Mudah",
+                question: "Olahraga modifikasi lempar lembing yang disesuaikan untuk anak sekolah dasar adalah...",
+                options: ["Lempar cakram", "Lempar roket/turbo", "Tolak peluru", "Lontar martil"],
+                answer: 1,
+                explanation: "Lempar turbo/roket dari bahan parabola/plastik dirancang khusus aman untuk pembelajaran siswa SD."
+            },
+            {
+                chapter: "Bab 3: Atletik",
+                level: "Sedang",
+                question: "Tujuan utama gerakan lari berbelok-belok (zig-zag) adalah untuk melatih...",
+                options: ["Kelincahan dan koordinasi gerak", "Kekuatan ibu jari", "Kelenturan leher", "Daya tahan mata"],
+                answer: 0,
+                explanation: "Lari zig-zag melatih kelincahan merubah arah dengan cepat dan seimbang."
+            },
+            {
+                chapter: "Bab 3: Atletik",
+                level: "Sedang",
+                question: "Posisi awal badan saat akan melakukan lempar roket adalah...",
+                options: ["Berdiri menghadap arah lemparan dengan roket dipegang di atas bahu", "Membelakangi lapangan", "Duduk bersila", "Berbaring terlentang"],
+                answer: 0,
+                explanation: "Siswa berdiri tegak mengarah ke sasaran depan dengan turbo dipegang sejajar di samping/atas bahu."
+            },
+
+            // BAB 4: GERAK DASAR PENCAK SILAT (10 SOAL)
+            {
+                chapter: "Bab 4: Pencak Silat",
+                level: "Mudah",
+                question: "Seni beladiri tradisional warisan budaya asli bangsa Indonesia adalah...",
+                options: ["Karate", "Taekwondo", "Pencak Silat", "Judo"],
+                answer: 2,
+                explanation: "Pencak silat merupakan kebudayaan dan seni beladiri asli Indonesia."
+            },
+            {
+                chapter: "Bab 4: Pencak Silat",
+                level: "Sedang",
+                question: "Sikap dasar dalam pencak silat dengan posisi kaki menapak kokoh untuk menjaga keseimbangan disebut...",
+                options: ["Kuda-kuda", "Pukulan", "Tangkisan", "Elakan"],
+                answer: 0,
+                explanation: "Kuda-kuda adalah posisi tumpuan kaki untuk memperkokoh tubuh saat serangan atau belaan."
+            },
+            {
+                chapter: "Bab 4: Pencak Silat",
+                level: "Sedang",
+                question: "Apabila berat badan ditumpukan pada kaki depan yang ditekuk, maka jenis kuda-kuda tersebut adalah...",
+                options: ["Kuda-kuda depan", "Kuda-kuda belakang", "Kuda-kuda samping", "Kuda-kuda tengah"],
+                answer: 0,
+                explanation: "Pada kuda-kuda depan, kaki depan ditekuk dan menopang sebagian besar berat badan."
+            },
+            {
+                chapter: "Bab 4: Pencak Silat",
+                level: "Mudah",
+                question: "Gerakan serangan menyerang lawan menggunakan kepalan tangan dalam pencak silat dinamakan...",
+                options: ["Tendangan", "Pukulan", "Tangkisan", "Kuda-kuda"],
+                answer: 1,
+                explanation: "Pukulan menggunakan lintasan kepalan tangan mengarah ke sasaran lawan."
+            },
+            {
+                chapter: "Bab 4: Pencak Silat",
+                level: "Sedang",
+                question: "Gerakan membela diri dengan cara membendung serangan lawan menggunakan lengan tangan dinamakan...",
+                options: ["Pukulan bandul", "Tangkisan", "Tendangan T", "Kuda-kuda samping"],
+                answer: 1,
+                explanation: "Tangkisan bertujuan menepis atau membendung kontak langsung pukulan/tendangan lawan."
+            },
+            {
+                chapter: "Bab 4: Pencak Silat",
+                level: "Sukar",
+                question: "Usaha pembelaan diri dengan cara memindahkan posisi tubuh menghindar tanpa kontak langsung serangan dinamakan...",
+                options: ["Tangkisan luar", "Elakan", "Pukulan lurus", "Kuda-kuda tengah"],
+                answer: 1,
+                explanation: "Elakan adalah mengelak/memindahkan sasaran tubuh sehingga serangan lawan meleset tanpa menyentuh."
+            },
+            {
+                chapter: "Bab 4: Pencak Silat",
+                level: "Sedang",
+                question: "Variasi pola langkah berbentuk huruf U atau zig-zag dalam pencak silat bertujuan untuk...",
+                options: ["Mengatur arah pijakan kaki dan posisi strategi", "Menjatuhkan diri sendiri", "Merusak arena pertandingan", "Mengulur waktu"],
+                answer: 0,
+                explanation: "Pola langkah mengatur pergerakan tumpuan kaki saat mendekati atau menjauhi lawan."
+            },
+            {
+                chapter: "Bab 4: Pencak Silat",
+                level: "Mudah",
+                question: "Nilai luhur utama yang diajarkan dalam mempelajari ilmu seni beladiri pencak silat adalah...",
+                options: ["Sombong dan suka berkelahi", "Rendah hati, santun, dan membela kebenaran", "Menakut-nakuti teman", "Mencari musuh di sekolah"],
+                answer: 1,
+                explanation: "Pencak silat mengajarkan budi pekerti luhur, kerendahan hati, dan pengendalian diri."
+            },
+            {
+                chapter: "Bab 4: Pencak Silat",
+                level: "Sedang",
+                question: "Sikap kesiapsiagaan awal pembelaan yang dikombinasikan dengan tumpuan kuda-kuda dinamakan...",
+                options: ["Sikap Pasang", "Sikap Tidur", "Sikap Lari", "Sikap Duduk"],
+                answer: 0,
+                explanation: "Sikap pasang adalah posisi siap siaga menyongsong serangan atau melakukan belaan."
+            },
+            {
+                chapter: "Bab 4: Pencak Silat",
+                level: "Sukar",
+                question: "Gerakan menendang dengan posisi tubuh menyamping dan telapak kaki membentuk huruf T dinamakan...",
+                options: ["Tendangan lurus", "Tendangan T", "Tendangan melingkar", "Tendangan belakang"],
+                answer: 1,
+                explanation: "Tendangan T menggunakan perkenaan sisi luar telapak kaki dengan posisi tubuh menyamping."
+            },
+
+            // BAB 5: KEBUGARAN JASMANI & POLA HIDUP SEHAT (10 SOAL)
+            {
+                chapter: "Bab 5: Kebugaran Jasmani & Hidup Sehat",
+                level: "Mudah",
+                question: "Kemampuan tubuh untuk melakukan aktivitas sehari-hari tanpa mengalami kelelahan berlebih disebut...",
+                options: ["Kebugaran jasmani", "Kelemahan tubuh", "Keseimbangan otot", "Kekakuan sendi"],
+                answer: 0,
+                explanation: "Kebugaran jasmani adalah kondisi kesegaran fisik tubuh untuk beraktivitas secara optimal."
+            },
+            {
+                chapter: "Bab 5: Kebugaran Jasmani & Hidup Sehat",
+                level: "Sedang",
+                question: "Latihan mendorong tubuh menggunakan lengan naik turun (Push-up) bertujuan melatih kekuatan otot...",
+                options: ["Otot perut", "Otot dada dan lengan", "Otot paha dan betis", "Otot leher"],
+                answer: 1,
+                explanation: "Push-up memfokuskan kekuatan otot dada, bahu, dan otot trisep/bisep lengan."
+            },
+            {
+                chapter: "Bab 5: Kebugaran Jasmani & Hidup Sehat",
+                level: "Sedang",
+                question: "Latihan mengangkat badan dari posisi terlentang (Sit-up) berfungsi untuk menguatkan otot...",
+                options: ["Otot perut", "Otot kaki", "Otot dada", "Otot jari"],
+                answer: 0,
+                explanation: "Sit-up merupakan latihan kekuatan yang berfokus pada pembentukan dan ketahanan otot perut."
+            },
+            {
+                chapter: "Bab 5: Kebugaran Jasmani & Hidup Sehat",
+                level: "Sedang",
+                question: "Bentuk gerakan lompat ditekuk di tempat untuk melatih kekuatan otot kaki dan tungkai dinamakan...",
+                options: ["Push-up", "Sit-up", "Squat jump", "Back-up"],
+                answer: 2,
+                explanation: "Squat jump melatih daya ledak serta kekuatan otot tungkai dan paha kaki."
+            },
+            {
+                chapter: "Bab 5: Kebugaran Jasmani & Hidup Sehat",
+                level: "Mudah",
+                question: "Lari santai atau jogging mengelilingi lapangan secara teratur bermanfaat melatih...",
+                options: ["Daya tahan jantung dan paru-paru", "Kekuatan kuku tangan", "Kelenturan telinga", "Ketajaman mata"],
+                answer: 0,
+                explanation: "Lari aerobik / jogging melatih kapasitas sistem pernapasan, jantung, dan sistem peredaran darah."
+            },
+            {
+                chapter: "Bab 5: Kebugaran Jasmani & Hidup Sehat",
+                level: "Sedang",
+                question: "Gerakan mencium lutut pada posisi duduk selonjor bertujuan untuk melatih...",
+                options: ["Kelenturan persendian dan otot punggung/paha", "Kekuatan gusi", "Keseimbangan telinga", "Daya tahan lengan"],
+                answer: 0,
+                explanation: "Mencium lutut membendung kekakuan dan meningkatkan fleksibilitas/kelenturan persendian tubuh."
+            },
+            {
+                chapter: "Bab 5: Kebugaran Jasmani & Hidup Sehat",
+                level: "Mudah",
+                question: "Salah satu contoh tindakan menjaga kebersihan diri sendiri setiap hari adalah...",
+                options: ["Mandi 2 kali sehari memakai sabun", "Tidur seharian tanpa mencuci kaki", "Membiarkan kuku tangan panjang dan kotor", "Makan tanpa mencuci tangan"],
+                answer: 0,
+                explanation: "Mandi teratur 2 kali sehari kuman dan kotoran ketiak/badan terangkat bersih."
+            },
+            {
+                chapter: "Bab 5: Kebugaran Jasmani & Hidup Sehat",
+                level: "Sedang",
+                question: "Pedoman gizi seimbang yang dianjurkan oleh Kementerian Kesehatan RI untuk porsi makan sehat adalah...",
+                options: ["Isi Piringku", "4 Sehat 5 Sempurna Lama", "Makan Gorengan Saja", "Minum Es Sirup Saja"],
+                answer: 0,
+                explanation: "'Isi Piringku' membagi porsi seimbang karbohidrat, lauk pauk protein, sayuran, dan buah-buahan."
+            },
+            {
+                chapter: "Bab 5: Kebugaran Jasmani & Hidup Sehat",
+                level: "Mudah",
+                question: "Bahan makanan yang berfungsi sebagai sumber energi utama bagi tubuh kita adalah...",
+                options: ["Karbohidrat (Nasi, jagung, kentang)", "Garam dapur", "Pewarna buatan", "Air es"],
+                answer: 0,
+                explanation: "Karbohidrat merupakan sumber zat tenaga utama untuk bergerak dan beraktivitas."
+            },
+            {
+                chapter: "Bab 5: Kebugaran Jasmani & Hidup Sehat",
+                level: "Sukar",
+                question: "Manfaat utama membiasakan minum air putih secukupnya 8 gelas sehari adalah...",
+                options: ["Mencegah dehidrasi dan menjaga metabolisme tubuh", "Membuat tubuh mengantuk", "Menyebabkan kelelahan", "Merusak pencernaan"],
+                answer: 0,
+                explanation: "Air putih menjaga kecukupan cairan tubuh (hidrasi) agar metabolisme dan organ berfungsi normal."
+            }
+        ];
+
+        function startQuiz(freshStart = true) {
+            if (freshStart) {
+                currentQuestionIndex = 0;
+                score = 0;
+                correctCount = 0;
+                wrongCount = 0;
+            }
+            showScreen('screen-quiz');
+            loadQuizQuestion(currentQuestionIndex);
+        }
+
+        function loadQuizQuestion(index) {
+            currentQuestionIndex = index;
+            const q = questionsData[index];
+
+            document.getElementById('quiz-feedback-box').classList.add('hidden');
+
+            document.getElementById('quiz-progress-badge').textContent = `SOAL ${index + 1} DARI ${questionsData.length}`;
+            document.getElementById('quiz-user-badge').textContent = `Sahabat Sehat: ${studentName}`;
+            document.getElementById('quiz-score-display').textContent = score;
+
+            document.getElementById('question-chapter-badge').textContent = q.chapter;
+            document.getElementById('question-difficulty-badge').textContent = `Level: ${q.level}`;
+
+            document.getElementById('question-text').textContent = q.question;
+
+            const container = document.getElementById('options-container');
+            container.innerHTML = '';
+            const prefixes = ['A', 'B', 'C', 'D'];
+
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "opt-btn text-left p-3.5 rounded-xl border-2 border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/50 font-semibold text-slate-700 transition flex items-center gap-3";
+                btn.onclick = () => selectQuizAnswer(idx);
+                btn.innerHTML = `
+                    <span class="w-8 h-8 rounded-lg bg-slate-100 text-slate-600 flex items-center justify-center font-bold text-sm shrink-0 border border-slate-300">${prefixes[idx]}</span>
+                    <span class="text-xs md:text-sm">${opt}</span>
+                `;
+                container.appendChild(btn);
+            });
+        }
+
+        function selectQuizAnswer(selectedIdx) {
+            const q = questionsData[currentQuestionIndex];
+            const isCorrect = (selectedIdx === q.answer);
+
+            const buttons = document.querySelectorAll('.opt-btn');
+            buttons.forEach((btn, idx) => {
+                btn.disabled = true;
+                if (idx === q.answer) {
+                    btn.classList.remove('border-slate-200');
+                    btn.classList.add('border-emerald-500', 'bg-emerald-50', 'text-emerald-900');
+                } else if (idx === selectedIdx && !isCorrect) {
+                    btn.classList.remove('border-slate-200');
+                    btn.classList.add('border-rose-500', 'bg-rose-50', 'text-rose-900');
+                }
+            });
+
+            const fbBox = document.getElementById('quiz-feedback-box');
+            const fbIcon = document.getElementById('feedback-icon');
+            const fbTitle = document.getElementById('feedback-title');
+            const fbExp = document.getElementById('feedback-explanation');
+
+            fbBox.classList.remove('hidden');
+
+            if (isCorrect) {
+                playSFX('correct');
+                score += 2; // 50 questions x 2 points = 100 max
+                correctCount++;
+                document.getElementById('quiz-score-display').textContent = score;
+
+                fbBox.className = "border-2 rounded-2xl p-5 mb-6 bg-emerald-50 border-emerald-300 text-emerald-900";
+                fbIcon.textContent = "✓";
+                fbTitle.textContent = `LUAR BIASA, ${studentName}! Jawabanmu Benar!`;
+                fbExp.innerHTML = `<b>Pembahasan:</b> ${q.explanation}`;
+
+                speakNarrator(`Kerja bagus ${studentName}! Jawabanmu benar.`);
+            } else {
+                playSFX('wrong');
+                wrongCount++;
+                fbBox.className = "border-2 rounded-2xl p-5 mb-6 bg-rose-50 border-rose-300 text-rose-900";
+                fbIcon.textContent = "✗";
+                fbTitle.textContent = `BELUM TEPAT, ${studentName}! Tetap Semangat!`;
+                fbExp.innerHTML = `<b>Kunci Jawaban Benar:</b> ${q.options[q.answer]}<br><br><b>Pembahasan:</b> ${q.explanation}`;
+
+                speakNarrator(`Belum tepat ${studentName}. Mari pelajari pembahasannya.`);
+            }
+        }
+
+        function nextQuizQuestion() {
+            playSFX('click');
+            if (currentQuestionIndex + 1 < questionsData.length) {
+                loadQuizQuestion(currentQuestionIndex + 1);
+            } else {
+                finishQuiz();
+            }
+        }
+
+        function finishQuiz() {
+            showScreen('screen-result');
+
+            document.getElementById('result-user-title').textContent = `Hebat, ${studentName}!`;
+            document.getElementById('final-score-val').textContent = score;
+            document.getElementById('final-correct-val').textContent = correctCount;
+            document.getElementById('final-wrong-val').textContent = wrongCount;
+
+            const kkmBadge = document.getElementById('kkm-status-badge');
+            const certBtn = document.getElementById('btn-cert-action');
+            const readMatBtn = document.getElementById('btn-read-material-again');
+            const motivationBox = document.getElementById('result-motivation-box');
+
+            if (score >= 75) {
+                playSFX('fanfare');
+                kkmBadge.textContent = "STATUS: TUNTAS KKM (≥ 75)";
+                kkmBadge.className = "inline-block px-4 py-1.5 rounded-full font-game font-bold text-sm mb-4 bg-emerald-100 text-emerald-800 border border-emerald-300";
+                certBtn.disabled = false;
+                certBtn.classList.remove('hidden', 'opacity-50', 'cursor-not-allowed');
+                readMatBtn.classList.add('hidden');
+                motivationBox.classList.add('hidden');
+
+                speakNarrator(`Selamat ${studentName}! Kamu LULUS KKM PJOK dengan nilai ${score}! Sertifikatmu telah aktif.`);
+            } else {
+                playSFX('wrong');
+                kkmBadge.textContent = "STATUS: BELUM TUNTAS KKM (< 75)";
+                kkmBadge.className = "inline-block px-4 py-1.5 rounded-full font-game font-bold text-sm mb-4 bg-rose-100 text-rose-800 border border-rose-300";
+                certBtn.classList.add('hidden');
+                readMatBtn.classList.remove('hidden');
+                readMatBtn.classList.add('flex');
+                motivationBox.classList.remove('hidden');
+
+                speakNarrator(`Nilaimu ${score}, belum mencapai KKM 75. Jangan menyerah, ayo pelajari lagi materinya!`);
+            }
+        }
+
+        function restartQuiz() {
+            startQuiz(true);
+        }
+
+        function openCertificateModal() {
+            if (score < 75) return;
+            playSFX('click');
+
+            document.getElementById('cert-student-name').textContent = studentName;
+            document.getElementById('cert-score-display').textContent = score;
+
+            const predEl = document.getElementById('cert-predicate-text');
+            if (score >= 90) {
+                predEl.textContent = "🏆 JUARA BINTANG OLAHRAGA (Sangat Baik)";
+            } else {
+                predEl.textContent = "🌟 SAHABAT SEHAT SPORTIF (Baik)";
+            }
+
+            const d = new Date();
+            const dateStr = d.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+            document.getElementById('cert-date-display').textContent = dateStr;
+
+            document.getElementById('certificate-modal').classList.remove('hidden');
+        }
+
+        function closeCertificateModal() {
+            playSFX('click');
+            document.getElementById('certificate-modal').classList.add('hidden');
+        }
+
+        /* INITIAL PAGE LOAD */
+        window.onload = function() {
+            showScreen('screen-login');
+        };
+    </script>
+</body>
+</html>
